@@ -79,9 +79,16 @@ abstract contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
 
     address constant ethAddress = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     ILendingPoolAddressesProvider public addressesProvider;
-
+    IERC20 internal constant ETH_TOKEN_ADDRESS = IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
+    IKyberNetworkProxy kyberProxy;
+    address payable public platformWallet = 0xC23D55D92464BFbD5989363472b2c39483dcb3c7;
+    uint256 public platformFeeBps;
+    
     constructor(address _addressProvider) public {
         addressesProvider = ILendingPoolAddressesProvider(_addressProvider);
+        kyberProxy =IKyberNetworkProxy(0xd719c34261e099Fdb33030ac8909d5788D3039C4);
+        platformWallet = platformWallet;
+        platformFeeBps = 25;
     }
 
     receive() payable external {}
