@@ -8,70 +8,6 @@ import "https://github.com/aave/flashloan-box/blob/Remix/contracts/aave/ILending
 import "https://github.com/aave/flashloan-box/blob/Remix/contracts/utils/Withdrawable.sol";
 
 
-interface IKyberNetworkProxy {
-
-    event ExecuteTrade(
-        address indexed trader,
-        IERC20 src,
-        IERC20 dest,
-        address destAddress,
-        uint256 actualSrcAmount,
-        uint256 actualDestAmount,
-        address platformWallet,
-        uint256 platformFeeBps
-    );
-
-    /// @notice backward compatible
-    function tradeWithHint(
-        ERC20 src,
-        uint256 srcAmount,
-        ERC20 dest,
-        address payable destAddress,
-        uint256 maxDestAmount,
-        uint256 minConversionRate,
-        address payable walletId,
-        bytes calldata hint
-    ) external payable returns (uint256);
-
-    function tradeWithHintAndFee(
-        IERC20 src,
-        uint256 srcAmount,
-        IERC20 dest,
-        address payable destAddress,
-        uint256 maxDestAmount,
-        uint256 minConversionRate,
-        address payable platformWallet,
-        uint256 platformFeeBps,
-        bytes calldata hint
-    ) external payable returns (uint256 destAmount);
-
-    function trade(
-        IERC20 src,
-        uint256 srcAmount,
-        IERC20 dest,
-        address payable destAddress,
-        uint256 maxDestAmount,
-        uint256 minConversionRate,
-        address payable platformWallet
-    ) external payable returns (uint256);
-
-    /// @notice backward compatible
-    /// @notice Rate units (10 ** 18) => destQty (twei) / srcQty (twei) * 10 ** 18
-    function getExpectedRate(
-        ERC20 src,
-        ERC20 dest,
-        uint256 srcQty
-    ) external view returns (uint256 expectedRate, uint256 worstRate);
-
-    function getExpectedRateAfterFee(
-        IERC20 src,
-        IERC20 dest,
-        uint256 srcQty,
-        uint256 platformFeeBps,
-        bytes calldata hint
-    ) external view returns (uint256 expectedRate);
-}
-
 abstract contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
 
     using SafeERC20 for IERC20;
@@ -79,16 +15,9 @@ abstract contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
 
     address constant ethAddress = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     ILendingPoolAddressesProvider public addressesProvider;
-    IERC20 internal constant ETH_TOKEN_ADDRESS = IERC20(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
-    IKyberNetworkProxy kyberProxy;
-    address payable public platformWallet = 0xC23D55D92464BFbD5989363472b2c39483dcb3c7;
-    uint256 public platformFeeBps;
-    
+
     constructor(address _addressProvider) public {
-        addressesProvider = ILendingPoolAddressesProvider(_addressProvider);
-        kyberProxy =IKyberNetworkProxy(0xd719c34261e099Fdb33030ac8909d5788D3039C4);
-        platformWallet = platformWallet;
-        platformFeeBps = 25;
+        addressesProvider = ILendingPoolAddressesProvider(0x1c8756FD2B28e9426CDBDcC7E3c4d64fa9A54728);
     }
 
     receive() payable external {}
