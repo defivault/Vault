@@ -17,7 +17,7 @@ abstract contract FlashLoanReceiverBase is IFlashLoanReceiver, Withdrawable {
     ILendingPoolAddressesProvider public addressesProvider;
 
     constructor(address _addressProvider) public {
-        addressesProvider = ILendingPoolAddressesProvider(0x1c8756FD2B28e9426CDBDcC7E3c4d64fa9A54728);
+        addressesProvider = ILendingPoolAddressesProvider(0x24a42fD28C976A61Df5D00D0599C34c4f90748c8);
     }
 
     receive() payable external {}
